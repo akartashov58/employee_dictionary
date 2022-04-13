@@ -1,0 +1,28 @@
+<vlayout>
+    <groupbox title="Сотрудники">
+        <grid model="@load(vm.employeeList)">
+            <columns>
+                <column label="Фамилия"/>
+                <column label="Имя"/>
+                <column label="Отчество"/>
+                <column label="Телефон"/>
+            </columns>
+            <template name="model" var="employee">
+                <row>
+                    <cell>
+                        <textbox value="@load(employee.surname)" disabled="true"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(employee.name)" disabled="true"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(employee.patronymic)" disabled="true"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(employee.phone)" disabled="true"/>
+                    </cell>
+                </row>
+            </template>
+        </grid>
+    </groupbox>
+</vlayout>

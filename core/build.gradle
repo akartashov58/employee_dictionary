@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.liquibase.gradle' version '2.0.4'
+    id 'io.freefair.lombok' version '5.3.0'
+}
+
+repositories {
+    maven { url "https://mavensync.zkoss.org/maven2" }
+    maven { url "https://mavensync.zkoss.org/eval" }
+    maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" } //for jasper reports
+    mavenCentral()
+}
+
+
+liquibase {
+    activities {
+        main {
+            changeLogFile '/core/src/main/resources/changelog.xml'
+            Properties appProperties = new Properties()
+            appProperties.load(project.file(project.rootDir.path + '/core/src/main/resources/app.properties').newDataInputStream())
+            url "${appProperties.getProperty('dbUrl')}"
+            username "${appProperties.getProperty('dbUsername')}"
+            password "${appProperties.getProperty('dbPassword')}"
+        }
+    }
+}
+
+ext {
+    zkVersion = '9.6.0-Eval'
+}
+
+dependencies {
+    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
+    compileOnly group: 'javax', name: 'javaee-api', version: '8.0'
+
+    implementation "org.zkoss.zk:zk:${zkVersion}"
+    implementation "org.zkoss.zk:zkbind:${zkVersion}"
+    implementation "org.zkoss.zk:zkex:${zkVersion}"    /*ZK PE*/
+    implementation "org.zkoss.zk:zkmax:${zkVersion}"   /*ZK EE*/
+    implementation "org.zkoss.zk:zuti:${zkVersion}"
+    implementation "org.zkoss.zk:zkplus:${zkVersion}"
+
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.4.3'
+    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.1.1'
+    liquibaseRuntime 'mysql:mysql-connector-java:8.0.28'
+
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.2.Final'
+    implementation 'mysql:mysql-connector-java:8.0.28'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}

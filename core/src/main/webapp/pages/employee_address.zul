@@ -1,0 +1,37 @@
+<vlayout>
+    <groupbox title="Адреса сотрудников">
+        <grid model="@load(vm.employeeList)">
+            <columns>
+                <column label="ФИО" width="20%"/>
+                <column label="Адресс"/>
+            </columns>
+            <template name="model" var="employee">
+                <row>
+                    <cell>
+                        <textbox value="@load(employee.fullName)" disabled="true"/>
+                    </cell>
+                    <cell>
+                        <listbox model="@load(employee.address)">
+                            <listhead>
+                                <listheader label="Почтовый индекс"/>
+                                <listheader label="Город"/>
+                                <listheader label="Улица"/>
+                                <listheader label="Дом"/>
+                                <listheader label="Квартира"/>
+                            </listhead>
+                            <template name="model">
+                                <listitem>
+                                    <listcell label="@init(each.postcode)"/>
+                                    <listcell label="@init(each.city)"/>
+                                    <listcell label="@init(each.street)"/>
+                                    <listcell label="@init(each.house)"/>
+                                    <listcell label="@init(each.apartment)"/>
+                                </listitem>
+                            </template>
+                        </listbox>
+                    </cell>
+                </row>
+            </template>
+        </grid>
+    </groupbox>
+</vlayout>
